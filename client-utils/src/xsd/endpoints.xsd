@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="urn:beans.client.camelot.qatools.yandex.ru"
+            elementFormDefault="qualified">
+
+    <xsd:element name="camelot">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="endpoint" minOccurs="1" maxOccurs="unbounded">
+                    <xsd:complexType>
+                        <xsd:attribute name="url" type="xsd:string" use="required"/>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

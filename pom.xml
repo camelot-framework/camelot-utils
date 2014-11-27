@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
+    <groupId>ru.yandex.qatools.camelot.utils</groupId>
+    <artifactId>camelot-utils</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Camelot Utils</name>
+
+    <modules>
+        <module>client-utils</module>
+        <module>plugin-utils</module>
+    </modules>
+
+    <scm>
+        <connection>scm:git:git@github.com:camelot-framework/camelot-utils.git</connection>
+        <developerConnection>scm:git:git@github.com:camelot-framework/camelot-utils.git</developerConnection>
+        <url>https://github.com/camelot-framework/camelot-utils</url>
+    </scm>
+
+    <url>https://github.com/camelot-framework/camelot-utils</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.version>3.1.0</maven.version>
+        <java.version>1.7</java.version>
+        <camelot.version>2.1.5</camelot.version>
+    </properties>
+
+    <organization>
+        <name>Yandex</name>
+        <url>http://company.yandex.com</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/camelot-framework/camelot-utils/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>TeamCity</system>
+        <url>http://teamcity.qatools.ru/</url>
+    </ciManagement>
+
+    <developers>
+        <developer>
+            <id>smecsia</id>
+            <name>Ilya Sadykov</name>
+            <email>smecsia@yandex-team.ru</email>
+            <organization>Yandex</organization>
+        </developer>
+        <developer>
+            <id>charlie</id>
+            <name>Baev Dmitry</name>
+            <email>charlie@yandex-team.ru</email>
+            <organization>Yandex</organization>
+        </developer>
+        <developer>
+            <id>innokenty</id>
+            <name>Innokenty Shuvalov</name>
+            <email>innokenty@yandex-team.ru</email>
+            <organization>Yandex</organization>
+        </developer>
+    </developers>
+
+    <mailingLists>
+        <mailingList>
+            <name>Camelot Mailing List</name>
+            <post>camelot@yandex-team.ru</post>
+        </mailingList>
+    </mailingLists>
+
+    <prerequisites>
+        <maven>3.0.4</maven>
+    </prerequisites>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>client-utils</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>plugin-utils</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ru.yandex.qatools.camelot</groupId>
+                <artifactId>camelot-api</artifactId>
+                <version>${camelot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ru.yandex.qatools.camelot</groupId>
+                <artifactId>camelot-test</artifactId>
+                <version>${camelot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>1.7.7</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
