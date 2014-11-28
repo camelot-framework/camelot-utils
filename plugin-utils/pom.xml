@@ -5,7 +5,7 @@
     <parent>
         <artifactId>camelot-utils</artifactId>
         <groupId>ru.yandex.qatools.camelot.utils</groupId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>plugin-utils</artifactId>
