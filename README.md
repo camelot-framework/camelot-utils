@@ -1,5 +1,7 @@
 # Camelot Utils
 
+[![release](http://github-release-version.herokuapp.com/github/camelot-framework/camelot-utils/release.svg?style=flat)](https://github.com/camelot-framework/camelot-utils/releases/latest) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/ru.yandex.qatools.camelot/camelot-utils/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/ru.yandex.qatools.camelot/camelot-utils)
+
 This project contains some tools that may be helpful when building
 [Camelot]-based applications.
 
