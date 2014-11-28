@@ -7,6 +7,16 @@ class that provides a couple of useful methods for working with the camelot
 plugin states repository, like building a 'correlation keys to state objects' 
 map et cetera.
 
+To use ```plugins-utils``` add the following dependency to your pom
+
+```xml
+<dependency>
+   <groupId>ru.yandex.qatools.camelot.utils</groupId>
+   <artifactId>plugin-utils</artifactId>
+   <version>${camelot-utils.version}</version>
+</dependency>
+```
+
 ### GraphiteReportProcessor
 
 This plugin offers a simple solution for sending arbitrary values from your 
@@ -14,11 +24,11 @@ camelot application to a Graphite imstance. That's what you have to do:
 
 1. specify properties ```graphite.host``` and ```graphite.port``` in your 
    ```camelot.properties``` file;
-2. add ```ru.yandex.qatools.camelot.plugin.GraphiteReportProcessor```
+1. add ```ru.yandex.qatools.camelot.plugin.GraphiteReportProcessor```
 to your ```camelot.xml```;
-3. add an automatically-injected field ```@MainInput EventProducer input```
+1. add an automatically-injected field ```@MainInput EventProducer input```
    to the plugin/resource you gonna send graphite values from;
-4. send values like this:
+1. send values like this:
    
    ```java
    import static ru.yandex.qatools.camelot.plugin.GraphiteValue.gValue;
@@ -26,7 +36,7 @@ to your ```camelot.xml```;
    input.produce(gValue("metric.name", 100500, System.currentTimeMillis()));
    ```
 
-5. Badum tsssss!
+1. Badum tsssss!
 
 ### PluginRepoUtils
 
