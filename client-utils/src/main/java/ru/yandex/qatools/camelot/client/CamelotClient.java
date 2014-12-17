@@ -1,7 +1,6 @@
 package ru.yandex.qatools.camelot.client;
 
 import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.client.ClientProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.yandex.qatools.camelot.client.beans.Camelot;
@@ -22,6 +21,9 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import static org.glassfish.jersey.client.ClientProperties.CONNECT_TIMEOUT;
+import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
 
 //TODO add tests
 /**
@@ -134,10 +136,10 @@ public abstract class CamelotClient {
 
     private Client getClient() {
         if (client == null) {
+            CamelotProperties properties = new CamelotProperties();
             client = ClientBuilder.newClient(new ClientConfig()
-                            .property(ClientProperties.CONNECT_TIMEOUT, 5000)
-                            .property(ClientProperties.READ_TIMEOUT, 5000)
-            );
+                            .property(CONNECT_TIMEOUT, properties.getClientConnectTimeout())
+                            .property(READ_TIMEOUT, properties.getClientReadTimeout()));
         }
         return client;
     }

@@ -26,6 +26,11 @@
             <artifactId>jersey-client</artifactId>
             <version>${jersey.version}</version>
         </dependency>
+        <dependency>
+            <groupId>ru.yandex.qatools.properties</groupId>
+            <artifactId>properties-loader</artifactId>
+            <version>1.5</version>
+        </dependency>
     </dependencies>
 
     <build>
