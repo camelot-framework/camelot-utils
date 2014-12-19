@@ -25,6 +25,7 @@ you will only have to specify which.
   - [3. Wrap generated client for more convenient usage](#3-wrap-generated-client-for-more-convenient-usage)
   - [4. Specify the server uri](#4-specify-the-server-uri)
 - [Result](#result)
+- [Configuration](#configuration)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
