@@ -240,3 +240,13 @@ new MyCamelotApplicationClient().send(bean);
 And that's it! It will automatically iterate over your endpoints and 
 try to send a message until it succeeds or the endpoints list is over.
 In this case it will throw a ```CamelotClientException``` with a corresponding message.
+
+## Configuration
+Also you can specify [connect] and [read] timeouts for the jersey client. You can do that two ways:
+ 1. set JVM systems properties named ```camelot.client.connect.timeout``` and ```camelot.client.read.timeout``` specifing values in milliseconds;
+ 2. specify the same properties in a resource named ```camelot.properties```.
+
+Defaults are both set to 30 sec to ensure message delivery.
+
+[connect]:https://jersey.java.net/apidocs/2.13/jersey/org/glassfish/jersey/client/ClientProperties.html#CONNECT_TIMEOUT "CONNECT_TIMEOUT"
+[read]:https://jersey.java.net/apidocs/2.13/jersey/org/glassfish/jersey/client/ClientProperties.html#READ_TIMEOUT "READ_TIMEOUT"
