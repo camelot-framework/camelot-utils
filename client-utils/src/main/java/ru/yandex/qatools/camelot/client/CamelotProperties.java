@@ -5,10 +5,12 @@ import ru.yandex.qatools.properties.annotations.Property;
 import ru.yandex.qatools.properties.annotations.Resource;
 
 /**
- * @author innokenty
+ * @author Innokenty Shuvalov innokenty@yandex-team.ru
  */
 @Resource.Classpath("camelot.properties")
 public class CamelotProperties {
+
+    public static final CamelotProperties PROPERTIES = new CamelotProperties();
 
     @Property("camelot.client.connect.timeout")
     private int clientConnectTimeout = 30000;
@@ -16,7 +18,13 @@ public class CamelotProperties {
     @Property("camelot.client.read.timeout")
     private int clientReadTimeout = 30000;
 
-    public CamelotProperties() {
+    @Property("camelot.client.endpoints.resource")
+    private String endpointsResource = "camelot-endpoints.xml";
+
+    @Property("camelot.client.endpoints.file")
+    private String endpointsFile = "/etc/camelot/endpoints.xml";
+
+    private CamelotProperties() {
         PropertyLoader.populate(this);
     }
 
@@ -26,5 +34,13 @@ public class CamelotProperties {
 
     public int getClientReadTimeout() {
         return clientReadTimeout;
+    }
+
+    public String getEndpointsResource() {
+        return endpointsResource;
+    }
+
+    public String getEndpointsFile() {
+        return endpointsFile;
     }
 }

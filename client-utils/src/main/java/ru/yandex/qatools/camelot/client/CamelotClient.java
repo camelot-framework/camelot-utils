@@ -3,150 +3,58 @@ package ru.yandex.qatools.camelot.client;
 import org.glassfish.jersey.client.ClientConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.qatools.beanloader.BeanLoader;
 import ru.yandex.qatools.camelot.client.beans.Camelot;
 
 import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
-import java.nio.file.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
 
+import static javax.ws.rs.client.ClientBuilder.newClient;
 import static org.glassfish.jersey.client.ClientProperties.CONNECT_TIMEOUT;
 import static org.glassfish.jersey.client.ClientProperties.READ_TIMEOUT;
+import static ru.qatools.beanloader.BeanLoader.load;
+import static ru.qatools.beanloader.BeanLoaderStrategies.file;
+import static ru.qatools.beanloader.BeanLoaderStrategies.resource;
+import static ru.yandex.qatools.camelot.client.CamelotProperties.PROPERTIES;
 
-//TODO add tests
 /**
  * @author Innokenty Shuvalov innokenty@yandex-team.ru
  * @author Dmitry Baev charlie@yandex-team.ru
  */
-@SuppressWarnings("UnusedDeclaration")
-public abstract class CamelotClient {
-
-    private static final String ENDPOINTS_FILE_NAME = "endpoints.xml";
-
-    private static final String ENDPOINTS_DIR = "/etc/camelot/";
-
-    private static final String ENDPOINTS_RESOURCE = "camelot-endpoints.xml";
-
-    private static final Object LOCK = new Object();
+public class CamelotClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CamelotClient.class);
 
-    private static volatile Camelot camelotConfig = new Camelot();
-
-    private static Unmarshaller unmarshaller = null;
+    private final BeanLoader<Camelot> endpointsLoader = load(Camelot.class)
+            .from(resource(PROPERTIES.getEndpointsResource()))
+            .from(file(PROPERTIES.getEndpointsFile(), true));
 
     private Client client;
 
-    static {
-        if (tryToCreateUnmarshaller() && !tryToLoadEndpointsFromClassPath()) {
-            tryToLoadEndpointsFromFile();
-            initEndpointsFileWatcher();
+    protected List<Camelot.Endpoint> endpoints() {
+        Camelot camelotConfig = endpointsLoader.getBean();
+        if (camelotConfig != null) {
+            return new ArrayList<>(camelotConfig.getEndpoints());
         }
-    }
-
-    private static boolean tryToCreateUnmarshaller() {
-        try {
-            unmarshaller = JAXBContext.newInstance(Camelot.class).createUnmarshaller();
-            return true;
-        } catch (JAXBException e) {
-            LOGGER.warn("Can't create unmarshaller for " + Camelot.class.getName(), e);
-        }
-        return false;
-    }
-
-    private static boolean tryToLoadEndpointsFromClassPath() {
-        try (InputStream is = CamelotClient.class.getClassLoader().getResourceAsStream(ENDPOINTS_RESOURCE)) {
-            if (is != null) {
-                synchronized (LOCK) {
-                    //noinspection unchecked
-                    camelotConfig = (Camelot) unmarshaller.unmarshal(is);
-                }
-                return true;
-            }
-        } catch (JAXBException | IOException ignored) {
-        }
-        return false;
-    }
-
-    private static boolean tryToLoadEndpointsFromFile() {
-        File file = new File(ENDPOINTS_DIR + ENDPOINTS_FILE_NAME);
-        if (file.exists()) {
-            try {
-                synchronized (LOCK) {
-                    //noinspection unchecked
-                    camelotConfig = (Camelot) unmarshaller.unmarshal(file);
-                    return true;
-                }
-            } catch (JAXBException ignored) {
-            }
-        }
-        return false;
-    }
-
-    private static boolean initEndpointsFileWatcher() {
-        final AtomicBoolean result = new AtomicBoolean(true);
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                Path endpoints = Paths.get(ENDPOINTS_DIR);
-                try (WatchService service = FileSystems.getDefault().newWatchService()) {
-                    endpoints.register(service,
-                            StandardWatchEventKinds.ENTRY_MODIFY
-                    );
-
-                    LOGGER.info("Watching for changes in directory " + ENDPOINTS_DIR);
-                    //noinspection all
-                    while (true) {
-                        try {
-                            WatchKey key = service.take();
-                            for (WatchEvent event : key.pollEvents()) {
-                                Path path = (Path) event.context();
-                                if (path.endsWith(ENDPOINTS_FILE_NAME)) {
-                                    LOGGER.info("Endpoints file changed");
-                                    tryToLoadEndpointsFromFile();
-                                }
-                            }
-                            key.reset();
-                        } catch (InterruptedException ignored) {
-                        }
-                    }
-
-                } catch (IOException e) {
-                    LOGGER.error("Can't create watch service for directory " + ENDPOINTS_DIR, e);
-                    result.getAndSet(false);
-                }
-            }
-        });
-        executor.shutdown();
-        return result.get();
+        return Collections.emptyList();
     }
 
     private Client getClient() {
         if (client == null) {
-            CamelotProperties properties = new CamelotProperties();
-            client = ClientBuilder.newClient(new ClientConfig()
-                            .property(CONNECT_TIMEOUT, properties.getClientConnectTimeout())
-                            .property(READ_TIMEOUT, properties.getClientReadTimeout()));
+            client = newClient(new ClientConfig()
+                        .property(CONNECT_TIMEOUT, PROPERTIES.getClientConnectTimeout())
+                        .property(READ_TIMEOUT, PROPERTIES.getClientReadTimeout()));
         }
         return client;
     }
 
     protected final <T> T findEndpointAndRun(EndpointOperation<T> operation)
             throws CamelotClientException {
-        List<Camelot.Endpoint> endpoints = new ArrayList<>(camelotConfig.getEndpoints());
+        List<Camelot.Endpoint> endpoints = endpoints();
         while (endpoints.size() > 0) {
             int endpointIndex = new Random().nextInt(endpoints.size());
             Camelot.Endpoint endpoint = endpoints.get(endpointIndex);
