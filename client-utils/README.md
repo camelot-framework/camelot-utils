@@ -215,7 +215,8 @@ public class MyCamelotApplicationClient extends CamelotClient {
 ```CamelotClient``` automatically loads the information about the uri(s)
 where your camelot application is running. They are specified via an xml
 file or resource in the format given below. For file/resource name 
-configuration see the [configuration] section.
+configuration see the [configuration] section. If both are provided then
+the resource gets a higher priority.
 
 ```xml
 <camelot xmlns="urn:beans.client.camelot.qatools.yandex.ru">
