@@ -214,7 +214,8 @@ public class MyCamelotApplicationClient extends CamelotClient {
 
 ```CamelotClient``` automatically loads the information about the uri(s)
 where your camelot application is running. They are specified via an xml
-with the following format:
+file or resource in the format given below. For file/resource name 
+configuration see the [configuration] section.
 
 ```xml
 <camelot xmlns="urn:beans.client.camelot.qatools.yandex.ru">
@@ -222,9 +223,6 @@ with the following format:
     <endpoint url="http://my-camelot-application-02.my-domain.org/camelot"/>
 </camelot>
 ```
-
-You can either save in under ```/etc/camelot/endpoints.xml``` (no option for Windows, sorry :)
-or add to classpath as a resource named ```camelot-endpoints.xml```.
 
 ## Result
 
@@ -243,11 +241,17 @@ try to send a message until it succeeds or the endpoints list is over.
 In this case it will throw a ```CamelotClientException``` with a corresponding message.
 
 ## Configuration
-Also you can specify [connect] and [read] timeouts for the jersey client. You can do that two ways:
- 1. set JVM systems properties named ```camelot.client.connect.timeout``` and ```camelot.client.read.timeout``` specifing values in milliseconds;
- 2. specify the same properties in a resource named ```camelot.properties```.
+Each property listed below can be set either via system property or in a resource 
+named ```camelot.properties```. System properties get a higher priority.
 
-Defaults are both set to 30 sec to ensure message delivery.
+|              property name              |           default value          |          description             |
+|-----------------------------------------|----------------------------------|----------------------------------|
+| ```camelot.client.endpoints.file```     | ```/etc/camelot/endpoints.xml``` | [endpoints] xml file location    |
+| ```camelot.client.endpoints.resource``` | ```camelot-endpoints.xml```      | [endpoints] xml resource name    |
+| ```camelot.client.connect.timeout```    | 30000                            | jersey client [connect timeout]  |
+| ```camelot.client.read.timeout```       | 30000                            | jersey client [read timeout]     |
 
-[connect]:https://jersey.java.net/apidocs/2.13/jersey/org/glassfish/jersey/client/ClientProperties.html#CONNECT_TIMEOUT "CONNECT_TIMEOUT"
-[read]:https://jersey.java.net/apidocs/2.13/jersey/org/glassfish/jersey/client/ClientProperties.html#READ_TIMEOUT "READ_TIMEOUT"
+[configuration]:#configuration
+[endpoints]:#4-specify-the-server-uri
+[connect timeout]:https://jersey.java.net/apidocs/2.13/jersey/org/glassfish/jersey/client/ClientProperties.html#CONNECT_TIMEOUT "CONNECT_TIMEOUT"
+[read timeout]:https://jersey.java.net/apidocs/2.13/jersey/org/glassfish/jersey/client/ClientProperties.html#READ_TIMEOUT "READ_TIMEOUT"
