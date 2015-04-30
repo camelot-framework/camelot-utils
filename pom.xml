@@ -10,7 +10,7 @@
 
     <groupId>ru.yandex.qatools.camelot.utils</groupId>
     <artifactId>camelot-utils</artifactId>
-    <version>1.4</version>
+    <version>1.5-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Camelot Utils</name>
@@ -24,7 +24,7 @@
         <connection>scm:git:git@github.com:camelot-framework/camelot-utils.git</connection>
         <developerConnection>scm:git:git@github.com:camelot-framework/camelot-utils.git</developerConnection>
         <url>https://github.com/camelot-framework/camelot-utils</url>
-      <tag>camelot-utils-1.4</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <url>https://github.com/camelot-framework/camelot-utils</url>
