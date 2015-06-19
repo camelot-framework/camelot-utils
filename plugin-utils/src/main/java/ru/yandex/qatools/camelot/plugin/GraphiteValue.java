@@ -9,16 +9,16 @@ import java.io.Serializable;
 public class GraphiteValue implements Serializable {
 
     private String name;
-    private long value;
+    private double value;
     private long timestamp;
 
-    public GraphiteValue(String name, long value, long timestamp) {
+    public GraphiteValue(String name, double value, long timestamp) {
         this.name = name;
         this.value = value;
         this.timestamp = timestamp;
     }
 
-    public GraphiteValue(Object source, long value, long timestamp) {
+    public GraphiteValue(Object source, double value, long timestamp) {
         this(source.getClass().getName(), value, timestamp);
     }
 
@@ -26,7 +26,7 @@ public class GraphiteValue implements Serializable {
      * just a shortcut method for constructor
      */
     @SuppressWarnings("UnusedDeclaration")
-    public static GraphiteValue gValue(Object source, long value, long timestamp) {
+    public static GraphiteValue gValue(Object source, double value, long timestamp) {
         return new GraphiteValue(source, value, timestamp);
     }
 
@@ -34,7 +34,7 @@ public class GraphiteValue implements Serializable {
      * just a shortcut method for constructor
      */
     @SuppressWarnings("UnusedDeclaration")
-    public static GraphiteValue gValue(String name, long value, long timestamp) {
+    public static GraphiteValue gValue(String name, double value, long timestamp) {
         return new GraphiteValue(name, value, timestamp);
     }
 

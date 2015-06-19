@@ -43,7 +43,7 @@ public class GraphiteReportProcessorTest {
 
     @Test
     public void testProcess() throws Exception {
-        GraphiteValue gValue = gValue("name", 1, 69);
+        GraphiteValue gValue = gValue("name", 1.372, 69);
         helper.sendTo(GraphiteReportProcessor.class, gValue);
         verify(graphiteProcessor, timeout(5000)).process(
                 argThat(Matchers.<GraphiteValue>allOf(
